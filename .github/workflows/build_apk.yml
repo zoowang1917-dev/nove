@@ -25,23 +25,32 @@ jobs:
         with:
           flutter-version: '3.24.5'
           channel: 'stable'
-          cache: true
 
-      # 【绝招】：删掉陈旧报错的安卓文件夹，用最新版重新生成一个健康的！
-      - name: Repair Android Project (Ultimate Fix)
+      - name: Repair Android Project & Fix Plugin Bug
         run: |
+          # 1. 重新生成干净的安卓工程
           rm -rf android
           flutter create --org com.novel.ai --platforms=android .
+          
+          # 2. 【终极杀招】提前手动注入版本和 SDK 变量，彻底防止插件报 null 崩溃！
+          echo "flutter.versionName=1.0.0" >> android/local.properties
+          echo "flutter.versionCode=1" >> android/local.properties
+          echo "flutter.compileSdkVersion=34" >> android/local.properties
+          echo "flutter.minSdkVersion=23" >> android/local.properties
+          echo "flutter.targetSdkVersion=34" >> android/local.properties
+          
+          # 3. 强制替换最低 SDK 版本要求
           sed -i 's/flutter.minSdkVersion/23/g' android/app/build.gradle
 
       - name: Install dependencies
         run: flutter pub get
 
+      # 4. 在打包命令中也强制带上版本号，双重保险
       - name: Build Debug APK (arm64)
-        run: flutter build apk --debug --target-platform android-arm64 --dart-define=APP_VERSION=1.0.0
+        run: flutter build apk --debug --target-platform android-arm64 --build-name=1.0.0 --build-number=1 --dart-define=APP_VERSION=1.0.0
 
       - name: Build Debug APK (arm32)
-        run: flutter build apk --debug --target-platform android-arm --dart-define=APP_VERSION=1.0.0
+        run: flutter build apk --debug --target-platform android-arm --build-name=1.0.0 --build-number=1 --dart-define=APP_VERSION=1.0.0
         continue-on-error: true
 
       - name: Upload APKs
