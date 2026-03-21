@@ -27,14 +27,16 @@ jobs:
           channel: 'stable'
           cache: true
 
-      # 【核心修复】：删掉不小心传上来的本地路径配置文件，防止云端找错路径！
-      - name: Clean up bad local properties
-        run: rm -f android/local.properties
+      # 【绝招】：删掉陈旧报错的安卓文件夹，用最新版重新生成一个健康的！
+      - name: Repair Android Project (Ultimate Fix)
+        run: |
+          rm -rf android
+          flutter create --org com.novel.ai --platforms=android .
+          sed -i 's/flutter.minSdkVersion/23/g' android/app/build.gradle
 
       - name: Install dependencies
         run: flutter pub get
 
-      # 把长命令合并为单行，避免换行符导致的报错
       - name: Build Debug APK (arm64)
         run: flutter build apk --debug --target-platform android-arm64 --dart-define=APP_VERSION=1.0.0
 
@@ -42,7 +44,6 @@ jobs:
         run: flutter build apk --debug --target-platform android-arm --dart-define=APP_VERSION=1.0.0
         continue-on-error: true
 
-      # 极简上传逻辑，直接去官方默认输出目录拿安装包
       - name: Upload APKs
         uses: actions/upload-artifact@v4
         with:
