@@ -25,33 +25,30 @@ jobs:
         with:
           flutter-version: '3.24.5'
           channel: 'stable'
+          cache: true
 
-      - name: Repair Android Project & Fix Plugin Bug
+      - name: Clean & Recreate Android Project
         run: |
-          # 1. 重新生成干净的安卓工程
+          # 清除旧配置，重建适配当前 Flutter 的现代安卓框架
           rm -rf android
           flutter create --org com.novel.ai --platforms=android .
-          
-          # 2. 【终极杀招】提前手动注入版本和 SDK 变量，彻底防止插件报 null 崩溃！
-          echo "flutter.versionName=1.0.0" >> android/local.properties
-          echo "flutter.versionCode=1" >> android/local.properties
-          echo "flutter.compileSdkVersion=34" >> android/local.properties
-          echo "flutter.minSdkVersion=23" >> android/local.properties
-          echo "flutter.targetSdkVersion=34" >> android/local.properties
-          
-          # 3. 强制替换最低 SDK 版本要求
           sed -i 's/flutter.minSdkVersion/23/g' android/app/build.gradle
 
-      - name: Install dependencies
-        run: flutter pub get
+      - name: Bypass Third-Party Plugin Bug (终极杀招)
+        run: |
+          # 强制覆写依赖，避开 9.0.0 版本的恶性崩溃 Bug！
+          echo "" >> pubspec.yaml
+          echo "dependency_overrides:" >> pubspec.yaml
+          echo "  package_info_plus: ^8.1.2" >> pubspec.yaml
 
-      # 4. 在打包命令中也强制带上版本号，双重保险
+      - name: Install dependencies
+        run: |
+          # 彻底清理缓存并重新拉取安全的依赖包
+          flutter clean
+          flutter pub get
+
       - name: Build Debug APK (arm64)
         run: flutter build apk --debug --target-platform android-arm64 --build-name=1.0.0 --build-number=1 --dart-define=APP_VERSION=1.0.0
-
-      - name: Build Debug APK (arm32)
-        run: flutter build apk --debug --target-platform android-arm --build-name=1.0.0 --build-number=1 --dart-define=APP_VERSION=1.0.0
-        continue-on-error: true
 
       - name: Upload APKs
         uses: actions/upload-artifact@v4
