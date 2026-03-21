@@ -1,0 +1,60 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+    <key>CFBundleDevelopmentRegion</key><string>zh_CN</string>
+    <key>CFBundleDisplayName</key><string>AI网文</string>
+    <key>CFBundleExecutable</key><string>$(EXECUTABLE_NAME)</string>
+    <key>CFBundleIdentifier</key><string>$(PRODUCT_BUNDLE_IDENTIFIER)</string>
+    <key>CFBundleInfoDictionaryVersion</key><string>6.0</string>
+    <key>CFBundleName</key><string>novel_ai_app</string>
+    <key>CFBundlePackageType</key><string>APPL</string>
+    <key>CFBundleShortVersionString</key><string>$(FLUTTER_BUILD_NAME)</string>
+    <key>CFBundleVersion</key><string>$(FLUTTER_BUILD_NUMBER)</string>
+
+    <!-- 竖屏为主，iPad 支持横屏 -->
+    <key>UISupportedInterfaceOrientations</key>
+    <array>
+        <string>UIInterfaceOrientationPortrait</string>
+        <string>UIInterfaceOrientationPortraitUpsideDown</string>
+    </array>
+    <key>UISupportedInterfaceOrientations~ipad</key>
+    <array>
+        <string>UIInterfaceOrientationPortrait</string>
+        <string>UIInterfaceOrientationPortraitUpsideDown</string>
+        <string>UIInterfaceOrientationLandscapeLeft</string>
+        <string>UIInterfaceOrientationLandscapeRight</string>
+    </array>
+
+    <!-- 深色模式优先 -->
+    <key>UIUserInterfaceStyle</key><string>Dark</string>
+    <key>UIStatusBarHidden</key><false/>
+    <key>UIViewControllerBasedStatusBarAppearance</key><false/>
+
+    <!-- 权限说明 -->
+    <key>NSPhotoLibraryUsageDescription</key>
+    <string>用于选择书籍封面图片</string>
+    <key>NSLocalNetworkUsageDescription</key>
+    <string>用于直接连接 AI 写作服务</string>
+
+    <!-- ATS：允许 HTTP 用于局域网测试 -->
+    <key>NSAppTransportSecurity</key>
+    <dict>
+        <key>NSAllowsLocalNetworking</key><true/>
+        <key>NSExceptionDomains</key>
+        <dict>
+            <key>localhost</key>
+            <dict>
+                <key>NSExceptionAllowsInsecureHTTPLoads</key><true/>
+            </dict>
+        </dict>
+    </dict>
+
+    <!-- iOS 最低版本：13.0（workmanager BGTask 要求）-->
+    <key>MinimumOSVersion</key><string>13.0</string>
+
+    <!-- Flutter -->
+    <key>CADisableMinimumFrameDurationOnPhone</key><true/>
+    <key>UIApplicationSupportsIndirectInputEvents</key><true/>
+</dict>
+</plist>

@@ -1,0 +1,44 @@
+// !$*UTF8*$!
+{
+	archiveVersion = 1;
+	classes = {
+	};
+	objectVersion = 54;
+	objects = {
+		97C146E61CF9000F007C117D = {
+			isa = PBXGroup;
+			children = (
+				9740EEB11CF90186004384FC,
+				97C146F01CF9000F007C117D,
+				97C146E71CF9000F007C117D,
+			);
+			sourceTree = "<group>";
+		};
+		9740EEB11CF90186004384FC = {
+			isa = PBXGroup;
+			children = (
+				9740EEB21CF90186004384FC,
+				9740EEB31CF90186004384FC,
+			);
+			name = Flutter;
+			sourceTree = "<group>";
+		};
+		9740EEB21CF90186004384FC = {
+			isa = PBXFileReference;
+			fileEncoding = 4;
+			lastKnownFileType = text.xcconfig;
+			name = Debug.xcconfig;
+			path = Flutter/Debug.xcconfig;
+			sourceTree = "<group>";
+		};
+		9740EEB31CF90186004384FC = {
+			isa = PBXFileReference;
+			fileEncoding = 4;
+			lastKnownFileType = text.xcconfig;
+			name = Release.xcconfig;
+			path = Flutter/Release.xcconfig;
+			sourceTree = "<group>";
+		};
+	};
+	rootObject = 97C146E61CF9000F007C117D;
+}

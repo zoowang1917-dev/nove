@@ -1,0 +1,8 @@
+# 复制这个文件为 local.properties，修改路径
+# macOS/Linux 示例：
+sdk.dir=/Users/用户名/Library/Android/sdk
+flutter.sdk=/Users/用户名/flutter
+
+# Windows 示例：
+# sdk.dir=C:\\Users\\用户名\\AppData\\Local\\Android\\sdk
+# flutter.sdk=C:\\flutter
