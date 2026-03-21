@@ -28,9 +28,7 @@ jobs:
           cache: true
 
       - name: Install dependencies
-        run: |
-          cd novel_local_final_v3
-          flutter pub get
+        run:  flutter pub get
 
       - name: Build Debug APK (arm64，推荐安装)
         run: |
