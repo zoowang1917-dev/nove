@@ -133,8 +133,8 @@ $archiveContext
       title = title.replaceAll(
         RegExp(r'[，。！？、：；\s【】《》（）\[\]]'), '');
       // 3. 移除引号包裹
-      title = title.replaceFirst(RegExp(r'^[\"\']'), '')
-               .replaceFirst(RegExp(r'[\"\']$'), '');
+              title = title.replaceAll('"', '').replaceAll("'", "").trim();
+
       title = title.trim();
       if (title.length >= 4 && title.length <= 12) return title;
       return _fallbackTitle(chapterNo, preview);
