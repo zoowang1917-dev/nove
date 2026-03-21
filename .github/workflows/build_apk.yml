@@ -20,31 +20,46 @@ jobs:
           java-version: '17'
           distribution: 'temurin'
 
-      # 使用与您脚本一致的稳定版 Flutter
       - name: Set up Flutter 3.24.5
         uses: subosito/flutter-action@v2
         with:
           flutter-version: '3.24.5'
           channel: 'stable'
-          cache: true
 
-      - name: Fix CI Environment Paths
+      - name: Clean & Rebuild Android Architecture
         run: |
-          # 【致胜关键】保留您的原始 Android 工程，只强行覆盖本地传上来的错误路径！
-          echo "flutter.sdk=$FLUTTER_ROOT" > android/local.properties
-          echo "sdk.dir=$ANDROID_HOME" >> android/local.properties
+          # 1. 删除残缺的旧架构，生成匹配 3.24.5 的纯净架构
+          rm -rf android
+          flutter create --org com.novel.ai --platforms=android .
+          
+          # 2. 【核心破局点】为所有第三方老旧插件强行注入全局 SDK 变量
+          # 伪装 flutter 对象，骗过那些写死代码的旧插件，彻底终结 null 崩溃！
+          cat <<EOF >> android/build.gradle
+          
+          allprojects {
+              ext.compileSdkVersion = 34
+              ext.minSdkVersion = 23
+              ext.targetSdkVersion = 34
+              
+              ext.flutter = [
+                  compileSdkVersion: 34,
+                  minSdkVersion: 23,
+                  targetSdkVersion: 34
+              ]
+          }
+          EOF
+          
+          # 3. 强制修改主 App 最低版本限制
+          sed -i 's/flutter.minSdkVersion/23/g' android/app/build.gradle
 
       - name: Install dependencies
         run: |
+          # 彻底清理缓存并重新拉取依赖
           flutter clean
           flutter pub get
 
       - name: Build Debug APK (arm64)
         run: flutter build apk --debug --target-platform android-arm64 --build-name=1.0.0 --build-number=1 --dart-define=APP_VERSION=1.0.0
-
-      - name: Build Debug APK (arm32)
-        run: flutter build apk --debug --target-platform android-arm --build-name=1.0.0 --build-number=1 --dart-define=APP_VERSION=1.0.0
-        continue-on-error: true
 
       - name: Upload APKs
         uses: actions/upload-artifact@v4
