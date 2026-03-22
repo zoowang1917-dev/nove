@@ -387,13 +387,13 @@ class AppDatabase {
     (await db).delete('chat_messages', where: 'session_id=?', whereArgs: [sessionId]);
 
   Future<void> clearAllChat() async => (await db).delete('chat_messages');
-}
+
   // ═══ Archive Snapshots ═══════════════════════
   Future<void> insertArchiveSnapshot({
     required String bookId, required String archiveType,
     required String content, required int chapterNo,
   }) async =>
-    (await database).insert('archive_snapshots', {
+    (await db).insert('archive_snapshots', {
       'book_id': bookId, 'archive_type': archiveType,
       'content': content, 'chapter_no': chapterNo,
       'created_at': DateTime.now().millisecondsSinceEpoch,
