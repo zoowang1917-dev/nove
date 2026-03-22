@@ -616,11 +616,11 @@ class _AuditBadge extends StatelessWidget {
                       try {
                         // 更新标题
                         if (titleCtrl.text.trim() != chapter.title) {
-                          await ref.read(tasksProvider(bookId).notifier)
+                          await ref.read(tasksProvider(chapter.bookId).notifier)
                             .updateChapterTitle(chapter.id, titleCtrl.text.trim());
                         }
                         // 更新内容（乐观更新）
-                        await ref.read(tasksProvider(bookId).notifier)
+                        await ref.read(tasksProvider(chapter.bookId).notifier)
                           .updateChapterContent(chapter.id, ctrl.text);
                         if (ctx2.mounted) {
                           Navigator.pop(ctx2);
