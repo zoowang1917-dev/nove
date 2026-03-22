@@ -536,51 +536,6 @@ class _TasksList extends ConsumerWidget {
   }
 }
 
-
-
-
-// ── 审计结果展示（幻觉防治可视化）────────────
-class _AuditBadge extends StatelessWidget {
-  const _AuditBadge({super.key, required this.criticals, required this.warnings, required this.passed});
-  final int  criticals, warnings;
-  final bool passed;
-  @override
-  Widget build(BuildContext context) {
-    if (passed && warnings == 0) {
-      return Container(
-        padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 4),
-        color: AppColors.jadeDim,
-        child: Row(mainAxisSize: MainAxisSize.min, children: [
-          const Icon(Icons.verified_outlined, size: 14, color: AppColors.jade2),
-          const SizedBox(width: 6),
-          const Text('连续性审计通过', style: TextStyle(
-            fontFamily: 'JetBrainsMono', fontSize: 10, color: AppColors.jade2)),
-        ]),
-      );
-    }
-    if (criticals > 0) {
-      return Container(
-        padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 4),
-        color: AppColors.crimsonDim,
-        child: Row(mainAxisSize: MainAxisSize.min, children: [
-          const Icon(Icons.auto_fix_high, size: 14, color: AppColors.crimson2),
-          const SizedBox(width: 6),
-          Text('发现 $criticals 处幻觉，自动修正中...', style: const TextStyle(
-            fontFamily: 'JetBrainsMono', fontSize: 10, color: AppColors.crimson2)),
-        ]),
-      );
-    }
-    return Container(
-      padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 4),
-      color: AppColors.goldDim,
-      child: Row(mainAxisSize: MainAxisSize.min, children: [
-        const Icon(Icons.warning_amber_outlined, size: 14, color: AppColors.gold2),
-        const SizedBox(width: 6),
-        Text('$warnings 条提示', style: const TextStyle(
-          fontFamily: 'JetBrainsMono', fontSize: 10, color: AppColors.gold2)),
-      ]),
-    );
-  }
   // ═══ Fix8: 章节直接编辑 ═══════════════════
   void _editChapter(BuildContext ctx, Chapter chapter) {
     final ctrl    = TextEditingController(text: chapter.content);
