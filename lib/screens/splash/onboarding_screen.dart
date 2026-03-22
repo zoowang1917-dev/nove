@@ -156,7 +156,7 @@ class _OnboardingScreenState extends ConsumerState<OnboardingScreen> {
         await AppDatabase.instance.setSetting('onboarding_done', '1');
         _goTo(2);
       } else {
-        if (mounted) context.showError('连接测试未通过，请检查 API Key');
+        if (mounted) ScaffoldMessenger.of(context).showSnackBar(const SnackBar(content: Text('连接测试未通过，请检查 API Key')));
       }
     } finally {
       if (mounted) setState(() => _saving = false);
