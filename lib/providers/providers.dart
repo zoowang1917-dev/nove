@@ -147,15 +147,12 @@ class TasksNotifier extends FamilyAsyncNotifier<List<Task>, String> {
   void stopWriting() => NovelPipeline.instance.stop();
 
   // Fix8: 乐观更新章节内容（UI立即响应，后台写库）
-  Future<void> updateChapterContent(String chapterId, String newContent) async {
-    // 1. 乐观更新内存状态（UI立即刷新，无需等待磁盘IO）
-    final wordCount = RegExp(r'[一-龥]').allMatches(newContent).length;
-    state = state.whenData((chapters) => chapters.map((c) {
-      if (c.id == chapterId) {
-        return c.copyWith(content: newContent, wordCount: wordCount);
-      }
-      return c;
-    }).toList());
+    Future<void> updateChapterContent(String chapterId, String newContent) async {
+    await _db.updateChapterContent(chapterId, newContent);
+    ref.invalidate(bookDetailProvider(arg));
+    ref.invalidate(chaptersProvider(arg));
+    await refresh();
+  }
 
     // 2. 异步写入数据库（不阻塞UI）
     await _db.updateChapterContent(chapterId, newContent);
