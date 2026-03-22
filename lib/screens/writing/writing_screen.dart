@@ -536,18 +536,17 @@ class _TasksList extends ConsumerWidget {
   }
 }
 
-  // ═══ Fix8: 章节直接编辑 ═══════════════════
+  // ————— Fix8: 章节直接编辑 —————
   void _editChapter(BuildContext ctx, Chapter chapter) {
-    final ctrl    = TextEditingController(text: chapter.content);
+    final ctrl = TextEditingController(text: chapter.content);
     final titleCtrl = TextEditingController(text: chapter.title);
-    bool saving   = false;
+    bool saving = false;
 
     showModalBottomSheet(
       context: ctx,
       isScrollControlled: true,
       backgroundColor: AppColors.surfaceL1,
-      shape: const RoundedRectangleBorder(
-        borderRadius: BorderRadius.vertical(top: Radius.circular(20))),
+      shape: const RoundedRectangleBorder(borderRadius: BorderRadius.vertical(top: Radius.circular(20))),
       builder: (_) => StatefulBuilder(
         builder: (ctx2, setState) => Padding(
           padding: EdgeInsets.only(bottom: MediaQuery.of(ctx2).viewInsets.bottom),
@@ -555,45 +554,32 @@ class _TasksList extends ConsumerWidget {
             height: MediaQuery.of(ctx2).size.height * 0.88,
             child: Column(children: [
               // 拖拽指示条
-              Container(width: 36, height: 4, margin: const EdgeInsets.only(top: 10, bottom: 4),
-                decoration: BoxDecoration(color: AppColors.border,
-                  borderRadius: BorderRadius.circular(2))),
+              Container(width: 36, height: 4, margin: const EdgeInsets.only(top: 10, bottom: 4), decoration: BoxDecoration(color: AppColors.border, borderRadius: BorderRadius.circular(2))),
               // 标题栏
               Padding(
                 padding: const EdgeInsets.fromLTRB(20, 8, 12, 8),
                 child: Row(children: [
-                  const Text('编辑章节', style: TextStyle(
-                    fontFamily: 'NotoSerifSC', fontSize: 16, fontWeight: FontWeight.w700)),
+                  const Text('编辑章节', style: TextStyle(fontFamily: 'NotoSerifSC', fontSize: 16, fontWeight: FontWeight.w700)),
                   const Spacer(),
                   TextButton(
                     onPressed: saving ? null : () async {
                       setState(() => saving = true);
                       try {
-                        // 更新标题
                         if (titleCtrl.text.trim() != chapter.title) {
-                          await ref.read(tasksProvider(chapter.bookId).notifier)
-                            .updateChapterTitle(chapter.id, titleCtrl.text.trim());
+                          await ref.read(tasksProvider(chapter.bookId).notifier).updateChapterTitle(chapter.id, titleCtrl.text.trim());
                         }
-                        // 更新内容（乐观更新）
-                        await ref.read(tasksProvider(chapter.bookId).notifier)
-                          .updateChapterContent(chapter.id, ctrl.text);
+                        await ref.read(tasksProvider(chapter.bookId).notifier).updateChapterContent(chapter.id, ctrl.text);
                         if (ctx2.mounted) {
                           Navigator.pop(ctx2);
-                          ctx.showSuccess('第${chapter.chapterNo}章已保存');
+                          ScaffoldMessenger.of(ctx).showSnackBar(SnackBar(content: Text('第${chapter.chapterNo}章已保存')));
                         }
                       } finally {
                         if (ctx2.mounted) setState(() => saving = false);
                       }
                     },
-                    }
-                    child: saving
-                      ? const SizedBox(width: 16, height: 16,
-                          child: CircularProgressIndicator(strokeWidth: 2))
-                      : const Text('保存', style: TextStyle(
-                          fontWeight: FontWeight.w600, color: AppColors.accent)),
+                    child: saving ? const SizedBox(width: 16, height: 16, child: CircularProgressIndicator(strokeWidth: 2)) : const Text('保存', style: TextStyle(fontWeight: FontWeight.w600, color: AppColors.accent)),
                   ),
-                  IconButton(onPressed: () => Navigator.pop(ctx2),
-                    icon: const Icon(Icons.close, size: 20)),
+                  IconButton(onPressed: () => Navigator.pop(ctx2), icon: const Icon(Icons.close, size: 20)),
                 ]),
               ),
               // 章节标题编辑
@@ -602,10 +588,7 @@ class _TasksList extends ConsumerWidget {
                 child: TextField(
                   controller: titleCtrl,
                   style: const TextStyle(fontWeight: FontWeight.w600, fontSize: 14),
-                  decoration: const InputDecoration(
-                    labelText: '章节标题',
-                    prefixIcon: Icon(Icons.title, size: 18),
-                  ),
+                  decoration: const InputDecoration(labelText: '章节标题', prefixIcon: Icon(Icons.title, size: 18)),
                 ),
               ),
               const SizedBox(height: 8),
@@ -617,34 +600,27 @@ class _TasksList extends ConsumerWidget {
                   builder: (_, v, __) {
                     final cnt = RegExp(r'[\u4e00-\u9fa5]').allMatches(v.text).length;
                     return Row(children: [
-                      Text('$cnt 字', style: const TextStyle(
-                        fontFamily: 'JetBrainsMono', fontSize: 11, color: AppColors.textTertiary)),
+                      Text('$cnt 字', style: const TextStyle(fontFamily: 'JetBrainsMono', fontSize: 11, color: AppColors.textTertiary)),
                       const Spacer(),
-                      Text('长按选中可批量替换', style: const TextStyle(
-                        fontSize: 10, color: AppColors.textTertiary)),
+                      const Text('长按选中可批量替换', style: TextStyle(fontSize: 10, color: AppColors.textTertiary)),
                     ]);
                   },
                 ),
               ),
               const SizedBox(height: 4),
               // 正文编辑区
-              Expanded(child: Padding(
-                padding: const EdgeInsets.symmetric(horizontal: 16),
-                child: TextField(
-                  controller: ctrl,
-                  maxLines:   null,
-                  expands:    true,
-                  style: const TextStyle(
-                    fontFamily: 'NotoSerifSC', fontSize: 14,
-                    color: AppColors.textPrimary, height: 1.85),
-                  decoration: const InputDecoration(
-                    border:          InputBorder.none,
-                    filled:          false,
-                    contentPadding:  EdgeInsets.all(4),
-                    hintText:        '章节正文...',
+              Expanded(
+                child: Padding(
+                  padding: const EdgeInsets.symmetric(horizontal: 16),
+                  child: TextField(
+                    controller: ctrl,
+                    maxLines: null,
+                    expands: true,
+                    style: const TextStyle(fontFamily: 'NotoSerifSC', fontSize: 14, color: AppColors.textPrimary, height: 1.85),
+                    decoration: const InputDecoration(border: InputBorder.none, filled: false, contentPadding: EdgeInsets.all(4), hintText: '章节正文...'),
                   ),
                 ),
-              )),
+              ),
               const SizedBox(height: 8),
             ]),
           ),
@@ -652,10 +628,9 @@ class _TasksList extends ConsumerWidget {
       ),
     );
   }
-  } // 这里的括号负责关上之前没关好的 build 方法大门
-}   // 这里的括号负责关上 _WritingScreenState 这个类的最后大门
+} // <--- 🌟 极其重要：这扇大门死死地关上了 _WritingScreenState 这个大房子！
 
-// --- 这是一个完全独立、干净的新组件，不会再报 ref 的错误 ---
+// --- 独立出来的审核角标组件 (绝对干净版，绝不会报 ref 错误) ---
 class _AuditBadge extends StatelessWidget {
   const _AuditBadge({super.key});
 
@@ -679,6 +654,4 @@ class _AuditBadge extends StatelessWidget {
       ),
     );
   }
-}
-
 }
