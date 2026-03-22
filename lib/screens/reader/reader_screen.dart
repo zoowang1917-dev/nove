@@ -141,36 +141,29 @@ class _ReaderScreenState extends ConsumerState<ReaderScreen>
                   const Text('编辑章节',
                     style: TextStyle(fontSize: 16, fontWeight: FontWeight.w700)),
                   const Spacer(),
-                  TextButton(
-                    onPressed: saving ? null : () async {
-                      setState(() => saving = true);
-                      try {
-                        // 保存到 provider（乐观更新 + 持久化）
- try {
-  if (titleCtrl.text.trim() != chapter.title) {
-    await ref.read(tasksProvider(widget.bookId).notifier)
-// 
+                          TextButton(
+          onPressed: saving ? null : () async {
+            setState(() => saving = true);
+            try {
+              if (titleCtrl.text.trim() != chapter.title) {
+                await ref.read(tasksProvider(widget.bookId).notifier)
+                    .updateChapterTitle(chapter.id, titleCtrl.text.trim());
+              }
+              await ref.read(tasksProvider(widget.bookId).notifier)
+                  .updateChapterContent(chapter.id, ctrl.text);
+              if (ctx2.mounted) {
+                Navigator.pop(ctx2);
+                ScaffoldMessenger.of(ctx).showSnackBar(const SnackBar(content: Text('已保存')));
+              }
+            } finally {
+              if (ctx2.mounted) setState(() => saving = false);
+            }
+          },
+          child: saving
+              ? const SizedBox(width: 14, height: 14, child: CircularProgressIndicator(strokeWidth: 2))
+              : const Text('保存', style: TextStyle(fontWeight: FontWeight.w700, color: AppColors.accent)),
+        ),
 
-                        if (titleCtrl.text.trim() != chapter.title) {
-                          await ref.read(tasksProvider(widget.bookId).notifier)
-                            .updateChapterTitle(chapter.id, titleCtrl.text.trim());
-                        }
-                        await ref.read(tasksProvider(widget.bookId).notifier)
-                          .updateChapterContent(chapter.id, ctrl.text);
-                        if (ctx2.mounted) {
-                          Navigator.pop(ctx2);
-ScaffoldMessenger.of(ctx).showSnackBar(const SnackBar(content: Text('已保存')));
-                        }
-                      } finally {
-                        if (ctx2.mounted) setState(() => saving = false);
-                      }
-                    },
-                    child: saving
-                      ? const SizedBox(width: 14, height: 14,
-                          child: CircularProgressIndicator(strokeWidth: 2))
-                      : const Text('保存',
-                          style: TextStyle(fontWeight: FontWeight.w700, color: AppColors.accent)),
-                  ),
                   IconButton(
                     onPressed: () => Navigator.pop(ctx2),
                     icon: const Icon(Icons.close, size: 20)),
