@@ -200,7 +200,7 @@ class _WritingScreenState extends ConsumerState<WritingScreen>
           ),
         ]),
         // ── 章节列表 ──
-        _ChaptersList(bookId: widget.bookId, onEdit: (ch) => _editChapter(context, ch)),
+        _ChaptersList(bookId: widget.bookId, onEdit: (ch) => _editChapter(ctx, ch)),
         // ── 任务记录 ──
         _TasksList(bookId: widget.bookId),
       ]),
@@ -630,6 +630,7 @@ class _AuditBadge extends StatelessWidget {
                         if (ctx2.mounted) setState(() => saving = false);
                       }
                     },
+                    }
                     child: saving
                       ? const SizedBox(width: 16, height: 16,
                           child: CircularProgressIndicator(strokeWidth: 2))
@@ -696,4 +697,33 @@ class _AuditBadge extends StatelessWidget {
       ),
     );
   }
+  } // 这里的括号负责关上之前没关好的 build 方法大门
+}   // 这里的括号负责关上 _WritingScreenState 这个类的最后大门
+
+// --- 这是一个完全独立、干净的新组件，不会再报 ref 的错误 ---
+class _AuditBadge extends StatelessWidget {
+  const _AuditBadge({super.key});
+
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      padding: const EdgeInsets.symmetric(horizontal: 6, vertical: 2),
+      margin: const EdgeInsets.only(left: 8),
+      decoration: BoxDecoration(
+        color: AppColors.crimson2.withOpacity(.1),
+        borderRadius: BorderRadius.circular(4),
+        border: Border.all(color: AppColors.crimson2.withOpacity(.2), width: 0.5),
+      ),
+      child: const Text(
+        '待审核',
+        style: TextStyle(
+          color: AppColors.crimson2, 
+          fontSize: 10, 
+          fontWeight: FontWeight.bold
+        ),
+      ),
+    );
+  }
+}
+
 }
