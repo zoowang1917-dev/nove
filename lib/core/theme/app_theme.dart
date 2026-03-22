@@ -154,7 +154,7 @@ class AppTheme {
   );
 
   // ── TabBar ──────────────────────────────────────
-  static TabBarThemeData _tabTheme() => TabBarThemeData(
+  static TabBarTheme _tabTheme() => TabBarTheme(
     indicatorColor:      AppColors.accent,
     indicatorSize:       TabBarIndicatorSize.label,
     labelColor:          AppColors.accent,
@@ -180,7 +180,7 @@ class AppTheme {
   );
 
   // ── Dialog ──────────────────────────────────────
-  static DialogThemeData _dialogTheme() => DialogThemeData(
+  static DialogTheme _dialogTheme() => DialogTheme(
     backgroundColor: AppColors.surfaceL1,
     surfaceTintColor: Colors.transparent,
     elevation: 16,
