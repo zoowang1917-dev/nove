@@ -567,7 +567,7 @@ class _CR extends StatelessWidget {
       Text(v, style: const TextStyle(fontFamily: 'JetBrainsMono', fontSize: 11, color: AppColors.jade2)),
     ]));
 }
-
+}
 // Fix7: 备份/恢复按钮组
 class _BackupButtons extends StatefulWidget {
   const _BackupButtons();
@@ -579,7 +579,7 @@ class _BackupButtonsState extends State<_BackupButtons> {
 
   @override
   void initState() { super.initState(); _loadInfo(); }
-
+  
   Future<void> _loadInfo() async {
     final info = await BackupManager.instance.getDatabaseInfo();
     if (mounted) setState(() => _dbSize = info.exists ? info.sizeLabel : '未知');
