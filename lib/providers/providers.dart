@@ -152,7 +152,7 @@ class TasksNotifier extends FamilyAsyncNotifier<List<Task>, String> {
     ref.invalidate(bookDetailProvider(arg));
     ref.invalidate(chaptersProvider(arg));
     await refresh();
-  }
+  
     // --- 补回误删的更新标题方法 ---
   Future<void> updateChapterTitle(String chapterId, String newTitle) async {
     await _db.updateChapterTitle(chapterId, newTitle);
@@ -166,7 +166,6 @@ class TasksNotifier extends FamilyAsyncNotifier<List<Task>, String> {
     ref.invalidate(chaptersProvider(arg));
   }
   }
-}
 
 // ════════════════════════════════════════════
 // 档案 Providers
