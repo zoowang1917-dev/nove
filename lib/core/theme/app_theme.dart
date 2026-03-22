@@ -83,7 +83,7 @@ class AppTheme {
   );
 
   // ── 卡片（Apple 圆角卡片）──────────────────────
-  static CardThemeData _cardTheme() => CardThemeData(
+  static CardTheme _cardTheme() => CardTheme(
     color:           AppColors.surfaceL1,
     elevation:       0,
     shape:           RoundedRectangleBorder(
