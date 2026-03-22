@@ -146,7 +146,11 @@ class _ReaderScreenState extends ConsumerState<ReaderScreen>
                       setState(() => saving = true);
                       try {
                         // 保存到 provider（乐观更新 + 持久化）
-                        final prov = ref.read(chaptersProvider(widget.bookId).notifier);
+ try {
+  if (titleCtrl.text.trim() != chapter.title) {
+    await ref.read(tasksProvider(widget.bookId).notifier)
+// 
+
                         if (titleCtrl.text.trim() != chapter.title) {
                           await ref.read(tasksProvider(widget.bookId).notifier)
                             .updateChapterTitle(chapter.id, titleCtrl.text.trim());
