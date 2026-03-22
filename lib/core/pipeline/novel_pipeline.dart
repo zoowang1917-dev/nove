@@ -540,7 +540,7 @@ class NovelPipeline {
       // Fix6: 传入 genre 实现题材感知标题风格
       final genre  = (await AppDatabase.instance.getBook(_currentBookId ?? ''))
                        ?['genre'] as String? ?? 'xuanhuan';
-      final result = await agents.ZhongshuAgent.generateTitle(
+      final result = await ZhongshuAgent.generateTitle(
         chapterNo: chapterNo,
         preview:   preview,
         genre:     genre,
