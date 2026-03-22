@@ -155,7 +155,7 @@ class _ReaderScreenState extends ConsumerState<ReaderScreen>
                           .updateChapterContent(chapter.id, ctrl.text);
                         if (ctx2.mounted) {
                           Navigator.pop(ctx2);
-                          ctx.showSuccess('已保存');
+ScaffoldMessenger.of(ctx).showSnackBar(const SnackBar(content: Text('已保存')));
                         }
                       } finally {
                         if (ctx2.mounted) setState(() => saving = false);
