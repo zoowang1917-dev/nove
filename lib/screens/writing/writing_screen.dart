@@ -200,7 +200,7 @@ class _WritingScreenState extends ConsumerState<WritingScreen>
           ),
         ]),
         // ── 章节列表 ──
-        _ChaptersList(bookId: widget.bookId, onEdit: (ch) => _editChapter(ctx, ch)),
+        _ChaptersList(bookId: widget.bookId, onEdit: (ch) => _editChapter(context, ref, ch)),
         // ── 任务记录 ──
         _TasksList(bookId: widget.bookId),
       ]),
@@ -537,7 +537,7 @@ class _TasksList extends ConsumerWidget {
 }
 
   // ————— Fix8: 章节直接编辑 —————
-  void _editChapter(BuildContext ctx, Chapter chapter) {
+  void _editChapter(BuildContext ctx, WidgetRef ref,Chapter chapter) {
     final ctrl = TextEditingController(text: chapter.content);
     final titleCtrl = TextEditingController(text: chapter.title);
     bool saving = false;
