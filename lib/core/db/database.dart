@@ -161,7 +161,7 @@ class AppDatabase {
       {...v, 'updated_at': DateTime.now().millisecondsSinceEpoch},
       where: 'id=?', whereArgs: [id]);
   Future<void> deleteBook(String id) async {
-    final d = await db;
+    final d = await database;
     // 先删子表，再删主表（顺序重要）
     await d.delete('task_logs',  where: 'task_id IN (SELECT id FROM tasks WHERE book_id=?)', whereArgs: [id]);
     await d.delete('tasks',      where: 'book_id=?', whereArgs: [id]);
@@ -174,7 +174,7 @@ class AppDatabase {
 
   // ─── Chapters ─────────────────────────────
   Future<Map<String,dynamic>?> getChapterByNo(String bookId, int chapterNo) async {
-    final rows = await (await db).query('chapters',
+    final rows = await (await database).query('chapters',
       where: 'book_id=? AND chapter_no=?', whereArgs: [bookId, chapterNo]);
     return rows.isEmpty ? null : rows.first;
   }
