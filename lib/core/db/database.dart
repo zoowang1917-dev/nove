@@ -424,3 +424,4 @@ class AppDatabase {
     await (await db).delete('archive_snapshots',
       where: 'book_id=? AND chapter_no>?', whereArgs: [bookId, chapterNo]);
   }
+}
