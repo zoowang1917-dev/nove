@@ -345,7 +345,7 @@ class _AdvancedAgentTab extends ConsumerWidget {
             style: TextStyle(fontSize: 12, color: AppColors.text2, height: 1.7))),
         ..._agents.map((a) {
           final cfg = list.firstWhere((c) => c.agentId == a.$1,
-            orElse: () => LlmConfigModel(agentId: a.$1,
+            orElse: () => LlmConfig(agentId: a.$1,
               baseUrl: 'https://api.deepseek.com/v1', model: 'deepseek-chat'));
           return Container(
             decoration: a.$4 ? const BoxDecoration(color: Color(0x08C8942A),
