@@ -474,7 +474,7 @@ class _ChaptersList extends ConsumerWidget {
                     const SizedBox(width: 4),
                     // 编辑按钮（Fix8）
                     GestureDetector(
-                      onTap: () => onEdit(ch),
+                      onTap: () => onEdit?.call(ch),
                       child: Container(
                         margin: const EdgeInsets.only(left: 2),
                         padding: const EdgeInsets.all(4),
