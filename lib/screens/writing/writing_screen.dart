@@ -628,7 +628,6 @@ class _TasksList extends ConsumerWidget {
       ),
     );
   }
-} // <--- 🌟 极其重要：这扇大门死死地关上了 _WritingScreenState 这个大房子！
 
 // --- 独立出来的审核角标组件 (绝对干净版，绝不会报 ref 错误) ---
 class _AuditBadge extends StatelessWidget {
