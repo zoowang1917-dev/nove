@@ -33,7 +33,7 @@ void main() async {
   SystemChrome.setSystemUIOverlayStyle(const SystemUiOverlayStyle(
     statusBarColor:          Colors.transparent,
     statusBarIconBrightness: Brightness.light,
-    navigationBarColor:      Color(0xFF111214),
+    systemNavigationBarColor: Color(0xFF111214),
   ));
 
   if (platform.isMobile) {
