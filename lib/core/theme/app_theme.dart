@@ -162,7 +162,6 @@ class AppTheme {
     labelStyle:          GoogleFonts.notoSansSc(fontSize: 13, fontWeight: FontWeight.w600),
     unselectedLabelStyle: GoogleFonts.notoSansSc(fontSize: 13, fontWeight: FontWeight.w400),
     dividerColor:        AppColors.divider,
-    indicatorWeight:     2,
     tabAlignment:        TabAlignment.fill,
     overlayColor:        WidgetStateProperty.all(AppColors.accentDim),
   );
