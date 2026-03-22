@@ -1,6 +1,7 @@
 // lib/platform/platform_service.dart
 // 多端适配核心：统一 Android / iOS 平台差异
 import 'dart:io';
+import 'package:package_info_plus/package_info_plus.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/services.dart';
 import 'package:device_info_plus/device_info_plus.dart';
