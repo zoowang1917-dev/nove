@@ -150,7 +150,7 @@ class _ArchiveView extends ConsumerWidget {
                 onPressed: saving ? null : () async {
                   setState(() => saving = true);
                   await saveArchive(bookId, archiveType, ctrl.text,
-                      container: ProviderScope.containerOf(context));
+                      container: ProviderScope.containerOf(ctx2));
                   ref.invalidate(archiveProvider((bookId: bookId, type: archiveType)));
                   ref.invalidate(archivesProvider(bookId));
                   if (ctx2.mounted) Navigator.pop(ctx2);
