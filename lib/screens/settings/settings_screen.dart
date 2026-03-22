@@ -506,7 +506,6 @@ class _StatsTabState extends State<_StatsTab> {
     _bar('当前模型', s.currentModel,                 AppColors.accent),
     _bar('请求成功率', '${(s.successRate * 100).toStringAsFixed(1)}%', AppColors.jade2),
     ],
-    ],
     const SizedBox(height: 24),
     const SectionLabel('每章成本参考'),
     const SizedBox(height: 8),
