@@ -153,24 +153,18 @@ class TasksNotifier extends FamilyAsyncNotifier<List<Task>, String> {
     ref.invalidate(chaptersProvider(arg));
     await refresh();
   }
-
-    // 2. 异步写入数据库（不阻塞UI）
-    await _db.updateChapterContent(chapterId, newContent);
-
-    // 3. 同步刷新书籍总字数
-    ref.invalidate(bookDetailProvider(arg));
-  }
-
-  // Fix8: 更新章节标题
+    // --- 补回误删的更新标题方法 ---
   Future<void> updateChapterTitle(String chapterId, String newTitle) async {
     await _db.updateChapterTitle(chapterId, newTitle);
     await refresh();
   }
 
+  // --- 补回误删的审核通过方法 ---
   Future<void> approveChapter(String chapterId) async {
     await _db.approveChapter(chapterId);
     await refresh();
     ref.invalidate(chaptersProvider(arg));
+  }
   }
 }
 
