@@ -1,6 +1,14 @@
+buildscript {
+    ext.kotlin_version = '1.9.24'
+    repositories {
+        google()
+        mavenCentral()
+    }
+}
+
 plugins {
     id "com.android.application"
-    id "kotlin-android"
+    id "kotlin-android" version "1.9.24"
     id "dev.flutter.flutter-gradle-plugin"
 }
 
