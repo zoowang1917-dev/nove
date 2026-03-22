@@ -418,7 +418,7 @@ class AppDatabase {
   Future<void> rollbackToSnapshot(String bookId, int chapterNo) async {
     final snap = await getSnapshot(bookId, chapterNo);
     for (final e in snap.entries) {
-      await insertArchiveSnapshot(bookId, e.key, e.value, chapterNo);
+      await insertArchiveSnapshot(bookId: bookId, type: e.key, content: e.value, chapterNo: chapterNo);
     }
     // 删除该快照点之后的快照
     await (await database).delete('archive_snapshots',
