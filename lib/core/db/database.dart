@@ -161,7 +161,7 @@ class AppDatabase {
       {...v, 'updated_at': DateTime.now().millisecondsSinceEpoch},
       where: 'id=?', whereArgs: [id]);
   Future<void> deleteBook(String id) async {
-    final d = await database;
+    final d = await db;
     // 先删子表，再删主表（顺序重要）
     await d.delete('task_logs',  where: 'task_id IN (SELECT id FROM tasks WHERE book_id=?)', whereArgs: [id]);
     await d.delete('tasks',      where: 'book_id=?', whereArgs: [id]);
@@ -174,7 +174,7 @@ class AppDatabase {
 
   // ─── Chapters ─────────────────────────────
   Future<Map<String,dynamic>?> getChapterByNo(String bookId, int chapterNo) async {
-    final rows = await (await database).query('chapters',
+    final rows = await (await db).query('chapters',
       where: 'book_id=? AND chapter_no=?', whereArgs: [bookId, chapterNo]);
     return rows.isEmpty ? null : rows.first;
   }
@@ -400,13 +400,13 @@ class AppDatabase {
     });
 
   Future<List<Map<String,dynamic>>> getSnapshotList(String bookId) async =>
-    (await database).rawQuery('''
+    (await db).rawQuery('''
       SELECT DISTINCT chapter_no FROM archive_snapshots
       WHERE book_id=? ORDER BY chapter_no DESC LIMIT 20
     ''', [bookId]);
 
   Future<Map<String,String>> getSnapshot(String bookId, int chapterNo) async {
-    final rows = await (await database).query('archive_snapshots',
+    final rows = await (await db).query('archive_snapshots',
       where: 'book_id=? AND chapter_no=?', whereArgs: [bookId, chapterNo]);
     final result = <String,String>{};
     for (final r in rows) {
@@ -421,6 +421,6 @@ class AppDatabase {
       await insertArchiveSnapshot(bookId: bookId, type: e.key, content: e.value, chapterNo: chapterNo);
     }
     // 删除该快照点之后的快照
-    await (await database).delete('archive_snapshots',
+    await (await db).delete('archive_snapshots',
       where: 'book_id=? AND chapter_no>?', whereArgs: [bookId, chapterNo]);
   }
