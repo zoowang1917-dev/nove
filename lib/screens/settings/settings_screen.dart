@@ -533,40 +533,54 @@ class _StatsTabState extends State<_StatsTab> {
         '📌 建议：每完成10章备份一次。\n备份文件包含全部书籍、章节、档案、伏笔，可存入微信收藏/网盘。',
         style: TextStyle(fontSize: 12, color: AppColors.textSecondary, height: 1.7)),
     ),
-    const SizedBox(height: 12),
-    _BackupButtons(),
-    const SizedBox(height: 16),
-    OutlinedButton(
-      onPressed: () { CostTracker.instance.reset(); context.showSuccess('已重置'); },
-      style: OutlinedButton.styleFrom(foregroundColor: AppColors.crimson2,
-        side: const BorderSide(color: AppColors.crimson2)),
-      child: const Text('重置统计')),
-  ]);
+                const SizedBox(height: 12),
+            _BackupButtons(),
+            const SizedBox(height: 16),
+            OutlinedButton(
+              onPressed: () {
+                CostTracker.instance.reset();
+                ScaffoldMessenger.of(context).showSnackBar(
+                  const SnackBar(content: Text('已重置'))
+                );
+              },
+              style: OutlinedButton.styleFrom(
+                foregroundColor: AppColors.crimson2,
+                side: const BorderSide(color: AppColors.crimson2),
+              ),
+              child: const Text('重置统计'),
+            ),
+          ]);
+  } // <--- 🌟 这扇门完美关上了 build 方法！
 
+  // 独立出来的 _bar 工具方法
   Widget _bar(String l, String v, Color c) => Container(
-    margin: const EdgeInsets.only(bottom: 8),
-    padding: const EdgeInsets.all(14),
-    decoration: BoxDecoration(color: c.withOpacity(.08),
-      border: Border(left: BorderSide(color: c, width: 2))),
-    child: Row(children: [
-      Text(l, style: const TextStyle(fontSize: 13, color: AppColors.text2)),
-      const Spacer(),
-      Text(v, style: TextStyle(fontFamily: 'JetBrainsMono', fontSize: 16,
-        fontWeight: FontWeight.w700, color: c)),
-    ]));
-}
+        margin: const EdgeInsets.only(bottom: 8),
+        padding: const EdgeInsets.all(14),
+        decoration: BoxDecoration(
+          color: c.withOpacity(.08),
+          border: Border(left: BorderSide(color: c, width: 2)),
+        ),
+        child: Row(children: [
+          Text(l, style: const TextStyle(fontSize: 13, color: AppColors.text2)),
+          const Spacer(),
+          Text(v, style: TextStyle(fontFamily: 'JetBrainsMono', fontSize: 16, fontWeight: FontWeight.w700, color: c)),
+        ]),
+      );
+} // <--- 🌟 这扇门彻底关上了 _StatTabState 大房子！
 
+// 彻底自由独立的 _CR 类
 class _CR extends StatelessWidget {
   const _CR(this.l, this.v);
   final String l, v;
+
   @override
   Widget build(BuildContext context) => Padding(
-    padding: const EdgeInsets.symmetric(vertical: 5),
-    child: Row(children: [
-      Expanded(child: Text(l, style: const TextStyle(fontSize: 12, color: AppColors.text2))),
-      Text(v, style: const TextStyle(fontFamily: 'JetBrainsMono', fontSize: 11, color: AppColors.jade2)),
-    ]));
-}
+        padding: const EdgeInsets.symmetric(vertical: 5),
+        child: Row(children: [
+          Expanded(child: Text(l, style: const TextStyle(fontSize: 12, color: AppColors.text2))),
+          Text(v, style: const TextStyle(fontFamily: 'JetBrainsMono', fontSize: 11, color: AppColors.jade2)),
+        ]),
+      );
 }
 // Fix7: 备份/恢复按钮组
 class _BackupButtons extends StatefulWidget {
