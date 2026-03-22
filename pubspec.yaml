@@ -74,5 +74,3 @@ flutter:
   #         weight: 700
   #       - asset: assets/fonts/NotoSerifSC-SemiBold.ttf
   #         weight: 600
-dependency_overrides:
-  package_info_plus: ^4.3.0
