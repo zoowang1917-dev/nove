@@ -374,7 +374,7 @@ class _AdvancedAgentTab extends ConsumerWidget {
 
 class _AgentSheet extends StatefulWidget {
   const _AgentSheet({super.key, required this.agentId, required this.name, required this.cfg, required this.ref});
-  final String agentId, name; final LlmConfigModel cfg; final WidgetRef ref;
+  final String agentId, name; final LlmConfig cfg; final WidgetRef ref;
   @override State<_AgentSheet> createState() => _AgentSheetState();
 }
 
