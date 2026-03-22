@@ -393,20 +393,20 @@ class AppDatabase {
     required String bookId, required String archiveType,
     required String content, required int chapterNo,
   }) async =>
-    (await db).insert('archive_snapshots', {
+    (await database).insert('archive_snapshots', {
       'book_id': bookId, 'archive_type': archiveType,
       'content': content, 'chapter_no': chapterNo,
       'created_at': DateTime.now().millisecondsSinceEpoch,
     });
 
   Future<List<Map<String,dynamic>>> getSnapshotList(String bookId) async =>
-    (await db).rawQuery('''
+    (await database).rawQuery('''
       SELECT DISTINCT chapter_no FROM archive_snapshots
       WHERE book_id=? ORDER BY chapter_no DESC LIMIT 20
     ''', [bookId]);
 
   Future<Map<String,String>> getSnapshot(String bookId, int chapterNo) async {
-    final rows = await (await db).query('archive_snapshots',
+    final rows = await (await database).query('archive_snapshots',
       where: 'book_id=? AND chapter_no=?', whereArgs: [bookId, chapterNo]);
     final result = <String,String>{};
     for (final r in rows) {
@@ -421,6 +421,6 @@ class AppDatabase {
       await saveArchive(bookId, e.key, e.value, chapterNo);
     }
     // 删除该快照点之后的快照
-    await (await db).delete('archive_snapshots',
+    await (await database).delete('archive_snapshots',
       where: 'book_id=? AND chapter_no>?', whereArgs: [bookId, chapterNo]);
   }
