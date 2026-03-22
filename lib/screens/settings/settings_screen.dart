@@ -645,6 +645,40 @@ class _BackupPanelState extends State<_BackupPanel> {
     if (mounted) setState(() => _dbSize = info.exists ? info.sizeLabel : '数据库未找到');
   }
 
+
+  // 完美修复的导出方法（已替换官方 SnackBar）
+  Future<void> _export() async {
+    setState(() => _exporting = true);
+    try {
+      final result = await BackupManager.instance.exportDatabase();
+      if (mounted) {
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(content: Text(result.success ? (result.message ?? '备份成功') : (result.error ?? '备份失败')))
+        );
+      }
+    } finally {
+      if (mounted) setState(() => _exporting = false);
+    }
+  }
+
+  // 完美修复的导入方法
+  Future<void> _import() async {
+    if (!mounted) return;
+    showDialog(
+      context: context,
+      builder: (_) => AlertDialog(
+        backgroundColor: AppColors.surfaceL1,
+        title: const Text('恢复备份'),
+        content: const Text(
+            '恢复备份会覆盖当前所有数据！\n\n操作步骤：\n1. 将 .db 备份文件传到手机\n2. 用文件管理器找到该文件\n3. 复制路径粘帖到此处\n建议先导出当前数据备份再恢复。',
+            style: TextStyle(fontSize: 13, height: 1.7)),
+        actions: [
+          TextButton(onPressed: () => Navigator.pop(context), child: const Text('关闭')),
+        ],
+      ),
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
     return Container(
@@ -690,47 +724,5 @@ class _BackupPanelState extends State<_BackupPanel> {
     );
   }
 
-  Future<void> _export() async {
-    setState(() => _exporting = true);
-    try {
-      final result = await BackupManager.instance.exportDatabase();
-      if (mounted) {
-        result.success
-          ? context.showSuccess(result.message ?? '备份成功')
-          : context.showError(result.error ?? '备份失败');
-      }
-    } finally {
-      if (mounted) setState(() => _exporting = false);
-    }
-  }
-
-  Future<void> _import() async {
-    // 提示用户操作
-    if (!mounted) return;
-    showDialog(
-      context: context,
-      builder: (_) => AlertDialog(
-        backgroundColor: AppColors.surfaceL1,
-        title: const Text('恢复备份'),
-        content: const Text(
-          '恢复备份会覆盖当前所有数据！\n\n'
-          '操作步骤：\n'
-          '1. 将 .db 备份文件传到手机\n'
-          '2. 用文件管理器找到该文件\n'
-          '3. 复制路径粘贴到此处\n\n'
-          '建议先导出当前数据备份再恢复。',
-          style: TextStyle(fontSize: 13, height: 1.7)),
-        actions: [
-          TextButton(onPressed: () => Navigator.pop(context), child: const Text('取消')),
-          ElevatedButton(
-            onPressed: () async {
-              Navigator.pop(context);
-              context.showSuccess('请将 .db 文件传到手机后，通过文件管理器选择');
-            },
-            child: const Text('知道了'),
-          ),
-        ],
-      ),
-    );
-  }
+  
 }
