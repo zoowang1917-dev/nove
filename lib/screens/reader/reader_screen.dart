@@ -295,12 +295,6 @@ class _ReaderScreenState extends ConsumerState<ReaderScreen>
                       chapters:       list,
                       currentChapter: _currentChapter,
                       pageCtrl:       _pageCtrl,
-                      onEdit: () {
-                        if (list.isEmpty) return;
-                        final idx  = _currentChapter - 1;
-                        final ch   = list[idx < list.length ? idx : list.length - 1];
-                        _editChapterFromReader(context, ch);
-                      },
                       settings:       settings,
                       onSettingsChanged: (s) =>
                         ref.read(readerSettingsProvider.notifier).update(s),
