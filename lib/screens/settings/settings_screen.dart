@@ -10,6 +10,7 @@ import '../../providers/providers.dart';
 import '../../widgets/common/widgets.dart';
 import '../../core/utils/extensions.dart';
 import '../../core/db/database.dart';
+import 'package:novel_ai_app/models/models.dart';
 import '../../core/utils/statistics_manager.dart';
 import '../../core/utils/backup_manager.dart';
 
@@ -345,7 +346,7 @@ class _AdvancedAgentTab extends ConsumerWidget {
             style: TextStyle(fontSize: 12, color: AppColors.text2, height: 1.7))),
         ..._agents.map((a) {
           final cfg = list.firstWhere((c) => c.agentId == a.$1,
-            orElse: () => LlmConfig(agentId: a.$1,
+            orElse: () => LlmConfigModel(agentId: a.$1,
               baseUrl: 'https://api.deepseek.com/v1', model: 'deepseek-chat'));
           return Container(
             decoration: a.$4 ? const BoxDecoration(color: Color(0x08C8942A),
@@ -374,7 +375,7 @@ class _AdvancedAgentTab extends ConsumerWidget {
 
 class _AgentSheet extends StatefulWidget {
   const _AgentSheet({super.key, required this.agentId, required this.name, required this.cfg, required this.ref});
-  final String agentId, name; final LlmConfig cfg; final WidgetRef ref;
+  final String agentId, name; final LlmConfigModel cfg; final WidgetRef ref;
   @override State<_AgentSheet> createState() => _AgentSheetState();
 }
 
