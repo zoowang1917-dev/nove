@@ -465,7 +465,7 @@ class _AgentSheetState extends State<_AgentSheet> {
 
   Future<void> _save() async {
     setState(() => _saving = true);
-    final ok = await widget.ref.read(llmConfigProvider.notifier).save(
+    final ok = await widget.ref.read(llmConfigsProvider.notifier).save(
       agentId: widget.agentId, baseUrl: _urlCtrl.text.trim(),
       model: _modelCtrl.text.trim(), apiKey: _keyCtrl.text.trim(),
       temperature: widget.agentId == 'bingbu' ? 0.85 : 0.2);
