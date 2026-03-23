@@ -1,6 +1,7 @@
 // lib/screens/settings/settings_screen.dart
 // RikkaHub 式模型自动发现 + 成本估算 + Agent 高级配置
 import 'package:flutter/material.dart';
+import '../../core/utils/update_manager.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
@@ -38,19 +39,31 @@ class _SettingsScreenState extends ConsumerState<SettingsScreen>
   @override void initState() { super.initState(); _tabs = TabController(length: 3, vsync: this); }
   @override void dispose()   { _tabs.dispose();  super.dispose(); }
 
-  @override
+    @override
   Widget build(BuildContext context) => Scaffold(
-    backgroundColor: AppColors.bg0,
-    appBar: AppBar(
-      title: const Text('设置'),
-      bottom: TabBar(controller: _tabs, tabs: const [
-        Tab(text: '模型配置'), Tab(text: '高级 Agent'), Tab(text: '统计'),
-      ]),
-    ),
-    body: TabBarView(controller: _tabs,
-      children: const [_ModelConfigTab(), _AdvancedAgentTab(), _StatsTab()]),
-  );
-}
+        backgroundColor: AppColors.bg0,
+        appBar: AppBar(
+          title: const Text('设置'),
+          // 👇 这是新加的“检查更新”按钮
+          actions: [
+            IconButton(
+              icon: const Icon(Icons.system_update, color: AppColors.text2),
+              tooltip: '检查更新',
+              onPressed: () {
+                UpdateManager.checkUpdate(context, showNoUpdateToast: true);
+              },
+            ),
+            const SizedBox(width: 8),
+          ],
+          // 👆 新按钮到这里结束
+          bottom: TabBar(controller: _tabs, tabs: const [
+            Tab(text: '模型配置'), Tab(text: '高级 Agent'), Tab(text: '统计'),
+          ]),
+        ),
+        body: TabBarView(controller: _tabs,
+            children: const [_ModelConfigTab(), _AdvancedAgentTab(), _StatsTab()]),
+      );
+
 
 // ════════════════════════════════════════════
 // Tab 1 — 模型配置（核心：RikkaHub 自动发现）
