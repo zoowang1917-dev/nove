@@ -21,12 +21,6 @@ void main() async {
     // 1. 初始化数据库
     await AppDatabase.instance.db;
 
-    // 2. 检测系统杀死后留下的中断任务
-    final hasInterrupted = await NovelPipeline.instance.recoverOnStart();
-    if (hasInterrupted) {
-      container.read(interruptedTaskProvider.notifier).state = 'recovered';
-    }
-
     // 3. 通知服务
     await NotificationService.instance.init();
 
