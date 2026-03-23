@@ -16,7 +16,7 @@ class AppDatabase {
   }
 
   Future<void> _onOpen(Database db) async {
-    await db.execute('PRAGMA journal_mode=WAL');
+    await db.rawQuery('PRAGMA journal_mode=WAL');
     await db.execute('PRAGMA foreign_keys=ON');
     await db.execute('PRAGMA cache_size=-8000');
     await db.execute('PRAGMA synchronous=NORMAL');
