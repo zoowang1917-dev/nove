@@ -32,9 +32,9 @@ jobs:
           rm -rf android
           flutter create --org com.novel.ai --platforms=android .
           # 物理级精确替换：找出所有隐藏的旧版本，强制全部升级为 1.9.24
-          find android -name "*.gradle" -exec sed -i 's/1.9.0/1.9.24/g' {} +
-          find android -name "*.gradle" -exec sed -i 's/1.8.22/1.9.24/g' {} +
-          find android -name "*.gradle" -exec sed -i 's/1.8.0/1.9.24/g' {} +
+          find android -name "*.gradle" -exec sed -i 's/1.9.0/2.1.0/g' {} +
+          find android -name "*.gradle" -exec sed -i 's/1.8.22/2.1.0/g' {} +
+          find android -name "*.gradle" -exec sed -i 's/1.8.0/2.1.0/g' {} +
 
 
           
