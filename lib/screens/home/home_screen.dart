@@ -25,7 +25,7 @@ class HomeScreen extends ConsumerWidget {
         actions: [
           IconButton(icon: const Icon(Icons.palette_outlined), tooltip: '写作风格',
             onPressed: () => context.push('/style')),
-          IconButton(icon: const Icon(Icons.add), onPressed: () => _showCreate(context, ref)),
+          IconButton(icon: const Icon(Icons.add), onPressed: () => showCreate(context, ref)),
         ],
       ),
       body: books.when(
