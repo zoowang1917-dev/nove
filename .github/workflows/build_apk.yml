@@ -31,6 +31,10 @@ jobs:
           # 1. 删除残缺的旧架构，生成匹配 3.24.5 的纯净架构
           rm -rf android
           flutter create --org com.novel.ai --platforms=android .
+          # 强行把生成的默认 Kotlin 版本篡改为 1.9.24
+          sed -i 's/kotlin.android" version ".*"/kotlin.android" version "1.9.24"/g' android/settings.gradle || true
+          sed -i "s/ext.kotlin_version = '.*/ext.kotlin_version = '1.9.24'/g" android/build.gradle || true
+
           
           # 2. 【核心破局点】为所有第三方老旧插件强行注入全局 SDK 变量
           # 伪装 flutter 对象，骗过那些写死代码的旧插件，彻底终结 null 崩溃！
