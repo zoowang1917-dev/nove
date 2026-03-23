@@ -226,8 +226,13 @@ class _CreateSheetState extends ConsumerState<_CreateSheet> {
     ]),
   );
 
-  Future<void> _submit() async {
-    if (_titleCtrl.text.trim().isEmpty) return;
+    Future<void> _submit() async {
+    // 👇 修改点：没填书名时，弹窗提示并拦截！
+    if (_titleCtrl.text.trim().isEmpty) {
+      context.showError('请先填写书名哦！');
+      return;
+    }
+
     setState(() => _loading = true);
     try {
       await ref.read(booksProvider.notifier).createBook(
@@ -235,11 +240,15 @@ class _CreateSheetState extends ConsumerState<_CreateSheet> {
         genre: _genre,
         brief: _briefCtrl.text.trim(),
       );
-      if (mounted) Navigator.pop(context);
+      if (mounted) {
+        Navigator.pop(context); // 成功后关闭弹窗
+        context.showSuccess('创建成功！开始创作吧！'); 
+      }
     } finally {
       if (mounted) setState(() => _loading = false);
     }
   }
+
 }
 
 class _Lbl extends StatelessWidget {
