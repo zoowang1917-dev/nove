@@ -63,7 +63,7 @@ class _SettingsScreenState extends ConsumerState<SettingsScreen>
         body: TabBarView(controller: _tabs,
             children: const [_ModelConfigTab(), _AdvancedAgentTab(), _StatsTab()]),
       );
-
+}
 
 // ════════════════════════════════════════════
 // Tab 1 — 模型配置（核心：RikkaHub 自动发现）
