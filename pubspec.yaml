@@ -1,7 +1,7 @@
 name: novel_ai_app
 description: 三省六部 × InkOS — AI网文创作平台（纯本地，直连LLM）
 publish_to: 'none'
-version: 1.0.0+1
+version: 1.0.1+2
 
 environment:
   sdk: '>=3.3.0 <4.0.0'
