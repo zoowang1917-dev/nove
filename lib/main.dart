@@ -14,41 +14,66 @@ import 'platform/platform_service.dart';
 final container = ProviderContainer();
 
 void main() async {
+  // 必须放在第一行
   WidgetsFlutterBinding.ensureInitialized();
 
-  // 初始化数据库
-  await AppDatabase.instance.db;
+  try {
+    // 1. 初始化数据库
+    await AppDatabase.instance.db;
 
-  // Fix1: 检测系统杀后台留下的中断任务
-  final hasInterrupted = await NovelPipeline.instance.recoverOnStartup();
-  if (hasInterrupted) {
-    container.read(interruptedTaskProvider.notifier).state = 'recovered';
+    // 2. 检测系统杀死后留下的中断任务
+    final hasInterrupted = await NovelPipeline.instance.recoverOnStart();
+    if (hasInterrupted) {
+      container.read(interruptedTaskProvider.notifier).state = 'recovered';
+    }
+
+    // 3. 通知服务
+    await NotificationService.instance.init();
+
+    // 4. 系统 UI 和平台
+    await platform.init();
+    SystemChrome.setSystemUIOverlayStyle(
+      const SystemUiOverlayStyle(
+        statusBarColor: Colors.transparent,
+        statusBarIconBrightness: Brightness.light,
+        systemNavigationBarColor: Color(0xFF111214),
+      ),
+    );
+
+    if (platform.isMobile) {
+      await SystemChrome.setPreferredOrientations([
+        DeviceOrientation.portraitUp,
+        DeviceOrientation.portraitDown,
+      ]);
+    }
+
+    // 所有准备工作顺利完成，正常启动 App！
+    runApp(UncontrolledProviderScope(
+      container: container,
+      child: const NovelAIApp(),
+    ));
+
+  } catch (e, stackTrace) {
+    // 💥 核心破局点：如果上面任何一步报错了，不要白屏，直接把报错信息显示在屏幕上！
+    runApp(
+      MaterialApp(
+        home: Scaffold(
+          backgroundColor: Colors.black,
+          body: SafeArea(
+            child: SingleChildScrollView(
+              padding: const EdgeInsets.all(16),
+              child: Text(
+                '❌ 启动失败 (Init Error):\n\n$e\n\n$stackTrace',
+                style: const TextStyle(color: Colors.redAccent, fontSize: 14),
+              ),
+            ),
+          ),
+        ),
+      ),
+    );
   }
-
-  // 通知服务
-  await NotificationService.instance.init();
-
-  // 系统 UI
-  await platform.init();
-  SystemChrome.setSystemUIOverlayStyle(const SystemUiOverlayStyle(
-    statusBarColor:          Colors.transparent,
-    statusBarIconBrightness: Brightness.light,
-    systemNavigationBarColor: Color(0xFF111214),
-  ));
-
-  if (platform.isMobile) {
-    await SystemChrome.setPreferredOrientations([
-      DeviceOrientation.portraitUp,
-      DeviceOrientation.portraitDown,
-    ]);
-  }
-
-  // 把同一个 container 传给 ProviderScope，确保状态共享
-  runApp(UncontrolledProviderScope(
-    container: container,
-    child: const NovelAIApp(),
-  ));
 }
+
 
 class NovelAIApp extends ConsumerWidget {
   const NovelAIApp({super.key});
